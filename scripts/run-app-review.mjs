@@ -1,15 +1,16 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { REACTION_TIMEOUT_MS, advanceTime, averageReaction, createGameState, growthStage, respond, startTrial } from '../src/engine.js';
-import { REACTION_RESPONSE_AGENCY_CONTRACT, RESULT_REENTRY_CONTRACT } from '../src/interaction-contracts.js';
+import { REACTION_TIMEOUT_MS, advanceTime, averageReaction, createGameState, growthStage, respond, respondAndContinue, startTrial } from '../src/engine.js';
+import { REACTION_RESPONSE_AGENCY_CONTRACT, RESULT_REENTRY_CONTRACT, SUCCESS_LOOP_CONTINUITY_CONTRACT } from '../src/interaction-contracts.js';
+import { evaluateLoopContinuation, validateLoopContinuityContract } from '../src/loop-continuity.js';
 import { evaluateActionCommit, validatePlayerAgencyContract } from '../src/player-agency.js';
 import { canAcceptNextAction, validateResponsivenessContract } from '../src/responsiveness.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = name => readFile(path.join(root, 'automation', `${name}.json`), 'utf8').then(JSON.parse);
-const [policy, agencyArtifact, responsivenessArtifact, gameSpec, pipeline] = await Promise.all([
-  readJson('APP_REVIEW_POLICY'), readJson('PLAYER_AGENCY_CONTRACT'), readJson('RESPONSIVENESS_CONTRACT'), readJson('GAME_SPEC'), readJson('PIPELINE_RUN')
+const [policy, agencyArtifact, responsivenessArtifact, continuityArtifact, gameSpec, pipeline] = await Promise.all([
+  readJson('APP_REVIEW_POLICY'), readJson('PLAYER_AGENCY_CONTRACT'), readJson('RESPONSIVENESS_CONTRACT'), readJson('LOOP_CONTINUITY_CONTRACT'), readJson('GAME_SPEC'), readJson('PIPELINE_RUN')
 ]);
 const [html, css, mainSource] = await Promise.all([
   readFile(path.join(root, 'index.html'), 'utf8'), readFile(path.join(root, 'styles.css'), 'utf8'), readFile(path.join(root, 'src', 'main.js'), 'utf8')
@@ -21,9 +22,10 @@ let falseStarts = 0;
 let timeouts = 0;
 let successes = 0;
 for (let index = 0; index < 600; index += 1) {
-  state = startTrial(state, 1000 + (index % 8) * 170);
+  if (state.phase !== 'waiting') state = startTrial(state, 1000 + (index % 8) * 170);
   if (index % 17 === 0) {
-    state = advanceTime(state, REACTION_TIMEOUT_MS + state.waitRemainingMs);
+    state = advanceTime(state, state.waitRemainingMs);
+    state = advanceTime(state, REACTION_TIMEOUT_MS);
     timeouts += 1;
   } else if (index % 12 === 0) {
     state = respond(state, 'pointer_down').state;
@@ -31,7 +33,7 @@ for (let index = 0; index < 600; index += 1) {
   } else {
     state = advanceTime(state, state.waitRemainingMs);
     state = advanceTime(state, 155 + (index % 9) * 43);
-    state = respond(state, index % 2 ? 'pointer_down' : 'key_down').state;
+    state = respondAndContinue(state, index % 2 ? 'pointer_down' : 'key_down', 1000 + ((index + 1) % 8) * 170).state;
     successes += 1;
   }
   if (state.xp < 0 || state.level < 1 || state.history.length > 10 || (state.bestReactionMs !== null && state.bestReactionMs <= 0)) invariantFailures += 1;
@@ -53,8 +55,19 @@ const sourceChecks = {
   pointerInput: mainSource.includes("addEventListener('pointerdown'"), keyboardInput: mainSource.includes("addEventListener('keydown'"),
   audioFeedback: mainSource.includes('AudioContext'), vibrationFeedback: mainSource.includes('navigator.vibrate'),
   responsiveViewport: html.includes('viewport-fit=cover'), visibleInstructions: html.includes('合図が光ったら'),
-  minimumSoundTarget: css.includes('min-height:44px'), landscapeLayout: css.includes('orientation:landscape'), reducedMotion: css.includes('prefers-reduced-motion')
+  minimumSoundTarget: css.includes('min-height:44px'), landscapeLayout: css.includes('orientation:landscape'), reducedMotion: css.includes('prefers-reduced-motion'),
+  automaticSuccessContinuation: mainSource.includes('respondAndContinue')
 };
+const continuitySignal = advanceTime(startTrial(createGameState(), 0), 0);
+const continuityResult = respondAndContinue(advanceTime(continuitySignal, 247), 'pointer_down', 1300);
+const failureContinuation = evaluateLoopContinuation(SUCCESS_LOOP_CONTINUITY_CONTRACT, { outcome: 'false_start', committedByPlayer: true });
+const continuityPassed = validateLoopContinuityContract(SUCCESS_LOOP_CONTINUITY_CONTRACT).valid
+  && continuityArtifact.continuationPolicy === SUCCESS_LOOP_CONTINUITY_CONTRACT.continuationPolicy
+  && continuityArtifact.additionalInputRequired === false
+  && continuityResult.continued === true
+  && continuityResult.state.phase === 'waiting'
+  && continuityResult.state.waitRemainingMs === 1300
+  && failureContinuation.continue === false;
 const automatedChecks = {
   engineInvariants: { status: invariantFailures ? 'failed' : 'passed', iterations: 600, failures: invariantFailures },
   stateCoverage: { status: falseStarts && timeouts && successes ? 'passed' : 'failed', successes, falseStarts, timeouts },
@@ -63,11 +76,16 @@ const automatedChecks = {
   rollingAverage: { status: state.history.length === 10 && averageReaction(state.history) !== null ? 'passed' : 'failed', sampleSize: state.history.length },
   playerAgency: { status: agencyPassed ? 'passed' : 'failed', readyConditionDoesNotCommit: true, declaredPlayerInputCommits: true },
   loopResponsiveness: { status: responsivenessPassed ? 'passed' : 'failed', nextActionAvailabilityMs: 0, resultPresentationBlocksInput: false },
+  loopContinuity: {
+    status: continuityPassed ? 'passed' : 'failed', additionalRestartInputsAfterSuccess: 0, continuationDelayMs: 0,
+    nextState: continuityResult.state.phase, failureOutcomesAutoContinue: false,
+    interpretation: '成功を確定した入力を継続意思として再利用し、新しい判断を伴わない次待機を自動開始する。'
+  },
   sourceCoverage: { status: Object.values(sourceChecks).every(Boolean) ? 'passed' : 'failed', checks: sourceChecks },
   browserVisualReview: { status: 'needs_human_review', reason: '複数実画面幅と端末入力遅延は人レビューで確認する。' },
   marketFit: { status: 'not_evaluated', reason: '市場調査未実行' }
 };
-const blockingAutomated = Object.values(automatedChecks).some(check => check.status === 'failed');
+const blockingAutomated = Object.values(automatedChecks).some(check => check.status === 'failed') || !continuityPassed;
 const findings = [
   { id: 'device-latency-variance', category: 'measurement_integrity', severity: 'medium', status: 'needs_human_review', description: 'ブラウザ、ディスプレイ、タッチ端末の遅延差が実測値へ影響する。絶対的な医学的測定値として扱わない。', automationDisposition: 'human_review_required' },
   { id: 'wait-tension-unverified', category: 'fun_loop', severity: 'high', status: 'needs_human_review', description: '900〜2600msの待機が緊張感になるか、退屈や苛立ちになるかは試遊が必要。', automationDisposition: 'human_review_required' },

@@ -62,8 +62,8 @@ try {
     if (!signalVisible) throw new Error('Browser smoke test did not reach the signal state.');
     await send('Runtime.evaluate', { expression: "document.querySelector('#reaction-zone').dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,button:0}))" });
     await wait(120);
-    const result = await send('Runtime.evaluate', { expression: "({result:document.querySelector('#game').classList.contains('phase-result'),last:document.querySelector('#last-time').textContent})", returnByValue: true });
-    if (!result.result.value.result || !result.result.value.last.includes('ms')) throw new Error('Browser smoke test did not produce a reaction result.');
+    const result = await send('Runtime.evaluate', { expression: "({waiting:document.querySelector('#game').classList.contains('phase-waiting'),last:document.querySelector('#last-time').textContent,instruction:document.querySelector('#state-label').textContent})", returnByValue: true });
+    if (!result.result.value.waiting || !result.result.value.last.includes('ms') || result.result.value.instruction !== 'WAIT…') throw new Error('Browser smoke test did not record a result and automatically continue waiting.');
     if (runtimeExceptions) throw new Error(`Browser smoke test observed ${runtimeExceptions} runtime exception(s).`);
     console.log(`Browser smoke result: ${result.result.value.last}; runtime exceptions: ${runtimeExceptions}`);
   }

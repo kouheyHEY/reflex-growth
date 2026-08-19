@@ -9,6 +9,8 @@
     { "field": "measurementIntegrity", "value": "raw_reaction_time_never_modified_by_growth", "sourceType": "RECOMMENDATION", "reason": "育成による補正で反射神経測定の意味を壊さないため。" },
     { "field": "growthEffects", "value": ["level", "light stage", "streak", "feedback"], "sourceType": "RECOMMENDATION", "reason": "測定の公平性を保ちながら成長を実感させるため。" },
     { "field": "falseStart", "value": "trial_failure_without_xp", "sourceType": "RECOMMENDATION", "reason": "合図を見る反射測定と予測連打を区別するため。" },
-    { "field": "nextTrialAvailabilityMs", "value": 0, "sourceType": "RECOMMENDATION", "reason": "結果を読みながら即座に次の試行を開始できるようにするため。" }
+    { "field": "nextTrialAvailabilityMs", "value": 0, "sourceType": "RECOMMENDATION", "reason": "結果を読みながら即座に次の試行を開始できるようにするため。" },
+    { "field": "successfulLoopContinuation", "value": "reuse_committing_input", "sourceType": "USER_INPUT", "reason": "成功結果の後に再開用タップを要求すると、同じ継続意思を二度入力させるため。" },
+    { "field": "failureLoopContinuation", "value": "manual_restart", "sourceType": "RECOMMENDATION", "reason": "早押しと時間切れは原因を認識してから再挑戦する意味があるため。" }
   ]
 }

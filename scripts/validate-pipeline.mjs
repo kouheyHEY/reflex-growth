@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const names = ['USER_BRIEF','RESEARCH_STATUS','DESIGN_DECISIONS','GAME_SPEC','IMPLEMENTATION_TASK','PLAYER_AGENCY_CONTRACT','RESPONSIVENESS_CONTRACT','APP_REVIEW_POLICY','HUMAN_APP_REVIEW','EVALUATION_PLAN','BROWSER_REVIEW_EVIDENCE','AUTOMATED_APP_REVIEW','REVIEW_REMEDIATION_TASKS','EVALUATION_RESULT','PUBLISH_PREVIEW','PIPELINE_RUN'];
+const names = ['USER_BRIEF','RESEARCH_STATUS','DESIGN_DECISIONS','GAME_SPEC','IMPLEMENTATION_TASK','PLAYER_AGENCY_CONTRACT','RESPONSIVENESS_CONTRACT','LOOP_CONTINUITY_CONTRACT','APP_REVIEW_POLICY','HUMAN_APP_REVIEW','EVALUATION_PLAN','BROWSER_REVIEW_EVIDENCE','AUTOMATED_APP_REVIEW','REVIEW_REMEDIATION_TASKS','EVALUATION_RESULT','PUBLISH_PREVIEW','PIPELINE_RUN'];
 const artifacts = Object.fromEntries(await Promise.all(names.map(async name => [name, JSON.parse(await readFile(path.join(root, 'automation', `${name}.json`), 'utf8'))])));
 const failures = [];
 if (artifacts.USER_BRIEF.theme.sourceType !== 'USER_INPUT' || artifacts.USER_BRIEF.inputGranularity !== 'rough') failures.push('Rough user theme provenance is missing.');
@@ -14,6 +14,7 @@ if (artifacts.GAME_SPEC.measurement.growthModifier !== null) failures.push('Grow
 if (!artifacts.IMPLEMENTATION_TASK.acceptanceCriteria.length) failures.push('Acceptance criteria are required.');
 if (artifacts.PLAYER_AGENCY_CONTRACT.commitPolicy !== 'player_input_required' || artifacts.PLAYER_AGENCY_CONTRACT.automaticCommitAllowed !== false) failures.push('Reaction measurement must require player input.');
 if (artifacts.RESPONSIVENESS_CONTRACT.nextActionAvailabilityMs !== 0) failures.push('Next trial must be immediately available.');
+if (artifacts.LOOP_CONTINUITY_CONTRACT.additionalInputRequired !== false || artifacts.LOOP_CONTINUITY_CONTRACT.continuationDelayMs !== 0) failures.push('Successful loop continuation must require no redundant input or delay.');
 if (!artifacts.APP_REVIEW_POLICY.categories.some(item => item.id === 'measurement_integrity' && item.required)) failures.push('Measurement integrity review must be required.');
 if (!artifacts.APP_REVIEW_POLICY.categories.some(item => item.id === 'growth_integrity' && item.required)) failures.push('Growth integrity review must be required.');
 if (artifacts.HUMAN_APP_REVIEW.status !== 'pending') failures.push('Human review must remain pending until completed by a reviewer.');

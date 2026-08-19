@@ -1,6 +1,15 @@
 {
   "schemaVersion": "1.0", "kind": "human-application-review", "status": "pending", "reviewer": null, "reviewedAt": null, "decision": null,
-  "playtestContext": { "devices": [], "sessionMinutes": null, "notes": "" },
+  "playtestContext": { "devices": ["smartphone"], "sessionMinutes": null, "notes": "ユーザー試遊で、成功後に再開用タップが必要な点を反復体験の摩擦として指摘。" },
+  "observations": [
+    {
+      "id": "redundant-success-restart-input",
+      "sourceType": "USER_REVIEW",
+      "finding": "反応タップ後、次の待機を始めるためにもう一度タップする必要があり、ループが途切れていた。",
+      "resolution": "成功タップを次ループ開始にも再利用し、結果を残しながら待機へ0msで自動継続する。",
+      "status": "implemented_pending_human_verification"
+    }
+  ],
   "categories": [
     { "id": "fine_bugs", "result": null, "notes": "" }, { "id": "layout", "result": null, "notes": "" },
     { "id": "friction", "result": null, "notes": "" }, { "id": "player_agency", "result": null, "notes": "" },

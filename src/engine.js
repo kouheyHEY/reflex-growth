@@ -1,5 +1,6 @@
-import { REACTION_RESPONSE_AGENCY_CONTRACT } from './interaction-contracts.js';
+import { REACTION_RESPONSE_AGENCY_CONTRACT, SUCCESS_LOOP_CONTINUITY_CONTRACT } from './interaction-contracts.js';
 import { evaluateActionCommit } from './player-agency.js';
+import { evaluateLoopContinuation } from './loop-continuity.js';
 
 export const MIN_WAIT_MS = 900;
 export const MAX_WAIT_MS = 2600;
@@ -39,7 +40,7 @@ export function xpForReaction(reactionMs) {
 }
 
 export function createGameState() {
-  return { phase: 'idle', waitRemainingMs: 0, signalElapsedMs: 0, trialCount: 0, lastReactionMs: null, bestReactionMs: null, history: [], xp: 0, level: 1, streak: 0, bestStreak: 0, lastXpGain: 0 };
+  return { phase: 'idle', waitRemainingMs: 0, signalElapsedMs: 0, trialCount: 0, lastOutcome: null, lastReactionMs: null, bestReactionMs: null, history: [], xp: 0, level: 1, streak: 0, bestStreak: 0, lastXpGain: 0 };
 }
 
 export function exportProgress(state) {
@@ -62,7 +63,7 @@ export function randomWaitMs(randomValue = Math.random()) {
 
 export function startTrial(state, waitMs = randomWaitMs()) {
   if (!['idle', 'result', 'false_start', 'missed'].includes(state.phase)) return state;
-  return { ...state, phase: 'waiting', waitRemainingMs: Math.max(0, waitMs), signalElapsedMs: 0, lastXpGain: 0 };
+  return { ...state, phase: 'waiting', waitRemainingMs: Math.max(0, waitMs), signalElapsedMs: 0 };
 }
 
 export function advanceTime(state, elapsedMs) {
@@ -73,7 +74,7 @@ export function advanceTime(state, elapsedMs) {
   }
   if (state.phase === 'signal') {
     const signalElapsedMs = state.signalElapsedMs + elapsed;
-    if (signalElapsedMs >= REACTION_TIMEOUT_MS) return { ...state, phase: 'missed', signalElapsedMs: REACTION_TIMEOUT_MS, trialCount: state.trialCount + 1, streak: 0, lastXpGain: 0 };
+    if (signalElapsedMs >= REACTION_TIMEOUT_MS) return { ...state, phase: 'missed', signalElapsedMs: REACTION_TIMEOUT_MS, trialCount: state.trialCount + 1, lastOutcome: 'missed', streak: 0, lastXpGain: 0 };
     return { ...state, signalElapsedMs };
   }
   return state;
@@ -83,7 +84,7 @@ export function respond(state, commitTrigger) {
   const agency = evaluateActionCommit(REACTION_RESPONSE_AGENCY_CONTRACT, commitTrigger);
   if (!agency.allowed) return { state, result: null, agencyViolation: agency.violation };
   if (state.phase === 'waiting') {
-    return { state: { ...state, phase: 'false_start', trialCount: state.trialCount + 1, streak: 0, lastXpGain: 0 }, result: { type: 'false_start' } };
+    return { state: { ...state, phase: 'false_start', trialCount: state.trialCount + 1, lastOutcome: 'false_start', streak: 0, lastXpGain: 0 }, result: { type: 'false_start' } };
   }
   if (state.phase !== 'signal') return { state, result: null };
 
@@ -95,11 +96,25 @@ export function respond(state, commitTrigger) {
   const streak = state.streak + 1;
   return {
     state: {
-      ...state, phase: 'result', trialCount: state.trialCount + 1, lastReactionMs: reactionMs,
+      ...state, phase: 'result', trialCount: state.trialCount + 1, lastOutcome: 'success', lastReactionMs: reactionMs,
       bestReactionMs: state.bestReactionMs === null ? reactionMs : Math.min(state.bestReactionMs, reactionMs),
       history, xp, level, streak, bestStreak: Math.max(state.bestStreak, streak), lastXpGain: xpGain
     },
     result: { type: 'success', reactionMs, xpGain, levelUp: level > state.level }
+  };
+}
+
+export function respondAndContinue(state, commitTrigger, nextWaitMs = randomWaitMs()) {
+  const response = respond(state, commitTrigger);
+  if (!response.result) return { ...response, continued: false };
+  const continuation = evaluateLoopContinuation(SUCCESS_LOOP_CONTINUITY_CONTRACT, { outcome: response.result.type, committedByPlayer: !response.agencyViolation });
+  if (!continuation.continue) return { ...response, continued: false, continuation };
+  return {
+    ...response,
+    completedState: response.state,
+    state: startTrial(response.state, nextWaitMs),
+    continued: true,
+    continuation
   };
 }
 

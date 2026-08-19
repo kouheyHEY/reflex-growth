@@ -7,7 +7,7 @@
   "categories": [
     { "id": "fine_bugs", "label": "細かなバグ", "required": true, "automation": "high", "automatedMethods": ["unit tests", "state invariants", "randomized simulation"], "humanRole": "端末固有問題を確認" },
     { "id": "layout", "label": "表示崩れ", "required": true, "automation": "high", "automatedMethods": ["responsive source checks", "multi-viewport review"], "humanRole": "実画面の競合と可読性を確認" },
-    { "id": "friction", "label": "プレイの面倒くささ", "required": true, "automation": "medium", "automatedMethods": ["actions to first play", "next-action availability", "dead-time measurement"], "humanRole": "反復の億劫さを試遊で判断" },
+    { "id": "friction", "label": "プレイの面倒くささ", "required": true, "automation": "medium", "automatedMethods": ["actions to first play", "next-action availability", "dead-time measurement", "redundant restart input count", "loop continuity contract"], "humanRole": "反復の億劫さを試遊で判断" },
     { "id": "player_agency", "label": "プレイヤー主体性", "required": true, "automation": "high", "automatedMethods": ["agency contract", "commit event order"], "humanRole": "反応が自分の入力として感じられるか確認" },
     { "id": "measurement_integrity", "label": "測定の正当性", "required": true, "automation": "high", "automatedMethods": ["raw-time invariants", "growth modifier absence", "boundary tests"], "humanRole": "端末差と体感値の妥当性を確認" },
     { "id": "growth_integrity", "label": "育成と成長実感", "required": true, "automation": "medium", "automatedMethods": ["XP thresholds", "stage reachability", "reward frequency"], "humanRole": "育った感覚と継続動機を判断" },

@@ -15,6 +15,7 @@
 - 入力・補完値・事実の出典分離
 - Player Agency Contract
 - Responsiveness Contract
+- Loop Continuity Contract
 - Implementation Task形式
 - 自動評価と人評価の分離
 - 必須アプリレビューゲート
@@ -22,6 +23,8 @@
 - 外部依存のないPC・スマホ共通ビルド
 
 一作目では「MAX到達とパンチ実行」、二作目では「合図表示と反応記録」をPlayer Agency Contractで分離した。一作目では「破壊演出と次チャージ」、二作目では「結果表示と次試行」をResponsiveness Contractで分離した。ゲーム固有コードを共有しなくても、契約の意味は再利用できた。
+
+二作目の試遊では、次試行が0msで開始可能でも、再開専用タップが1回必要ならループの摩擦が残ると判明した。成功タップを継続意思として再利用するLoop Continuity Contractを追加し、「操作可能時間」と「必要入力数」を別々に検査する。
 
 ## 二作目で新しく必要になった境界
 

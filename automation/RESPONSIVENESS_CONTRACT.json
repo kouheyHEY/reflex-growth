@@ -2,6 +2,7 @@
   "schemaVersion": "1.0", "kind": "responsiveness-contract", "id": "result_to_next_trial",
   "outcome": "reaction_result_shown", "nextAction": "start_next_trial", "nextActionAvailabilityMs": 0,
   "outcomePresentationPolicy": "non_blocking", "presentationMayOverlapNextAction": true,
-  "inputBufferPolicy": "not_required_because_result_state_accepts_input",
-  "rationale": "結果を読める状態を維持しながら、次の試行開始を即時受付する。"
+  "inputBufferPolicy": "not_required_because_success_auto_continues",
+  "initiationPolicy": "automatic_after_success",
+  "rationale": "結果を読める状態を維持しながら、成功タップから次の待機を即時開始する。"
 }

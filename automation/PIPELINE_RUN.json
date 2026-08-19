@@ -42,6 +42,13 @@
       ]
     },
     {
+      "id": "playtest_preview",
+      "status": "completed",
+      "provider": "github_pages",
+      "url": "https://kouheyhey.github.io/reflex-growth/",
+      "approvedByUser": true
+    },
+    {
       "id": "publish",
       "status": "waiting_for_user",
       "artifact": "PUBLISH_PREVIEW.json"
@@ -51,5 +58,5 @@
   "actualCost": 0,
   "tokenUsage": null,
   "externalApiUsage": [],
-  "notes": "市場調査、外部AI API、実公開は実行していない。"
+  "notes": "市場調査と外部AI APIは未実行。GitHub Pagesは人レビュー用previewとして公開済みで、正式公開ゲートは閉じている。"
 }

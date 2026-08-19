@@ -1,4 +1,4 @@
-import { advanceTime, averageReaction, createGameState, exportProgress, growthStage, levelProgress, randomWaitMs, respond, restoreProgress, startTrial } from './engine.js';
+import { advanceTime, averageReaction, createGameState, exportProgress, growthStage, levelProgress, randomWaitMs, respondAndContinue, restoreProgress, startTrial } from './engine.js';
 import { createEffects } from './effects.js';
 
 const elements = {
@@ -56,7 +56,13 @@ function syncUi() {
     missed: ['SIGNAL MISSED', 'TOO SLOW', 'タップで再挑戦']
   }[state.phase];
   [elements.eyebrow.textContent, elements.label.textContent, elements.instruction.textContent] = copy;
-  elements.note.textContent = state.phase === 'result' ? reactionGrade(state.lastReactionMs)[0] : state.phase === 'false_start' ? '合図より早い入力' : state.phase === 'missed' ? '1.6秒を超過' : '反応を記録します';
+  elements.note.textContent = state.phase === 'false_start'
+    ? '合図より早い入力'
+    : state.phase === 'missed'
+      ? '1.6秒を超過'
+      : state.lastOutcome === 'success'
+        ? `${reactionGrade(state.lastReactionMs)[0]} · +${state.lastXpGain} XP`
+        : '反応を記録します';
 }
 
 function tone(frequency, duration, type = 'sine', volume = .035, endFrequency = frequency) {
@@ -84,7 +90,7 @@ function beginNextTrial() {
 function commit(trigger) {
   if (['idle', 'result', 'false_start', 'missed'].includes(state.phase)) { beginNextTrial(); return; }
   const previousLevel = state.level;
-  const response = respond(state, trigger);
+  const response = respondAndContinue(state, trigger, randomWaitMs());
   state = response.state;
   if (!response.result) return;
   if (response.result.type === 'false_start') {

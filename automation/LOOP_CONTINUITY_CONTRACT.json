@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "loop-continuity-contract",
+  "id": "successful_reaction_to_next_wait",
+  "continuingOutcomes": ["success"],
+  "excludedOutcomes": ["false_start", "missed"],
+  "continuationPolicy": "reuse_committing_input",
+  "additionalInputRequired": false,
+  "newDecisionRequired": false,
+  "continuationDelayMs": 0,
+  "nextLoopState": "waiting",
+  "resultPresentationPolicy": "non_blocking",
+  "rationale": "成功タップが測定確定と継続意思の両方を示しており、次の待機開始に別の判断を必要としないため。"
+}

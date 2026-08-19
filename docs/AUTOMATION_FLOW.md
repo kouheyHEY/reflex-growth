@@ -17,6 +17,8 @@ PLAYER_AGENCY_CONTRACT
   ↓
 RESPONSIVENESS_CONTRACT
   ↓
+LOOP_CONTINUITY_CONTRACT
+  ↓
 Measurement / Growth automated review
   ↓
 HUMAN_APP_REVIEW
@@ -24,4 +26,4 @@ HUMAN_APP_REVIEW
 PUBLISH_PREVIEW（承認待ち）
 ```
 
-HTTPリクエスト中に外部処理を実行する構成ではなく、各段階を独立したJSON成果物として保存する。今回は外部APIを使わないローカル縦切り検証のため、Jobキューは未実装。
+HTTPリクエスト中に外部処理を実行する構成ではなく、各段階を独立したJSON成果物として保存する。今回は外部APIを使わない縦切り検証のため、Jobキューは未実装。GitHub Pagesは試遊プレビューとして公開し、正式公開とは分離する。

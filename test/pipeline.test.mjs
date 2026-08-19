@@ -8,7 +8,7 @@ test('rough user input remains distinct from generated decisions', async () => {
   const [brief, decisions] = await Promise.all([load('USER_BRIEF'), load('DESIGN_DECISIONS')]);
   assert.equal(brief.inputGranularity, 'rough');
   assert.equal(brief.theme.sourceType, 'USER_INPUT');
-  assert.ok(decisions.decisions.every(item => ['RECOMMENDATION', 'ESTIMATE'].includes(item.sourceType)));
+  assert.ok(decisions.decisions.every(item => ['USER_INPUT', 'RECOMMENDATION', 'ESTIMATE'].includes(item.sourceType)));
   assert.ok(decisions.decisions.every(item => item.reason));
 });
 
@@ -30,6 +30,15 @@ test('reused agency and responsiveness contracts are game-specific instances', a
   assert.equal(agency.commitPolicy, 'player_input_required');
   assert.equal(responsiveness.id, 'result_to_next_trial');
   assert.equal(responsiveness.nextActionAvailabilityMs, 0);
+});
+
+test('successful loop continuation consumes no redundant restart input', async () => {
+  const contract = await load('LOOP_CONTINUITY_CONTRACT');
+  assert.equal(contract.continuationPolicy, 'reuse_committing_input');
+  assert.equal(contract.additionalInputRequired, false);
+  assert.equal(contract.newDecisionRequired, false);
+  assert.equal(contract.continuationDelayMs, 0);
+  assert.deepEqual(contract.excludedOutcomes, ['false_start', 'missed']);
 });
 
 test('human review and publication remain closed', async () => {

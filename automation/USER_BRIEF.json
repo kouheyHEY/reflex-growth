@@ -3,7 +3,9 @@
   "kind": "user-brief",
   "inputGranularity": "rough",
   "theme": { "value": "反射神経測定ゲーム + 育成ゲーム", "sourceType": "USER_INPUT" },
-  "explicitConstraints": [],
+  "explicitConstraints": [
+    { "value": "反応タップの直後に、追加タップなしで次の待機を開始する", "sourceType": "USER_INPUT" }
+  ],
   "preservationPriority": "original_theme",
   "missingFieldsPolicy": "補完値はUSER_INPUTと区別し、理由を保存する"
 }

@@ -24,9 +24,9 @@
     },
     "growthReachability": {
       "status": "passed",
-      "reachedLevel": 44,
+      "reachedLevel": 47,
       "reachedStage": "nova",
-      "xp": 8790
+      "xp": 9363
     },
     "rollingAverage": {
       "status": "passed",
@@ -42,6 +42,14 @@
       "nextActionAvailabilityMs": 0,
       "resultPresentationBlocksInput": false
     },
+    "loopContinuity": {
+      "status": "passed",
+      "additionalRestartInputsAfterSuccess": 0,
+      "continuationDelayMs": 0,
+      "nextState": "waiting",
+      "failureOutcomesAutoContinue": false,
+      "interpretation": "成功を確定した入力を継続意思として再利用し、新しい判断を伴わない次待機を自動開始する。"
+    },
     "sourceCoverage": {
       "status": "passed",
       "checks": {
@@ -53,7 +61,8 @@
         "visibleInstructions": true,
         "minimumSoundTarget": true,
         "landscapeLayout": true,
-        "reducedMotion": true
+        "reducedMotion": true,
+        "automaticSuccessContinuation": true
       }
     },
     "browserVisualReview": {

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { HISTORY_LIMIT, MAX_WAIT_MS, MIN_WAIT_MS, REACTION_TIMEOUT_MS, advanceTime, averageReaction, createGameState, exportProgress, levelForXp, randomWaitMs, respond, restoreProgress, startTrial, xpForReaction } from '../src/engine.js';
+import { HISTORY_LIMIT, MAX_WAIT_MS, MIN_WAIT_MS, REACTION_TIMEOUT_MS, advanceTime, averageReaction, createGameState, exportProgress, levelForXp, randomWaitMs, respond, respondAndContinue, restoreProgress, startTrial, xpForReaction } from '../src/engine.js';
 
 test('random wait remains inside the declared range', () => {
   assert.equal(randomWaitMs(0), MIN_WAIT_MS);
@@ -75,4 +75,23 @@ test('growth progress can persist without restoring an in-progress trial', () =>
   assert.equal(restored.level, 4);
   assert.equal(restored.bestReactionMs, 188);
   assert.deepEqual(restored.history, [240, 188]);
+});
+
+test('successful reaction immediately starts the next wait without another input', () => {
+  const signal = advanceTime(startTrial(createGameState(), 0), 0);
+  const result = respondAndContinue(advanceTime(signal, 214), 'pointer_down', 1200);
+  assert.equal(result.result.reactionMs, 214);
+  assert.equal(result.continued, true);
+  assert.equal(result.continuation.additionalInputRequired, false);
+  assert.equal(result.state.phase, 'waiting');
+  assert.equal(result.state.waitRemainingMs, 1200);
+  assert.equal(result.state.lastReactionMs, 214);
+  assert.equal(result.state.lastXpGain, 28);
+});
+
+test('failure outcomes stop for feedback instead of silently auto-continuing', () => {
+  const result = respondAndContinue(startTrial(createGameState(), 1000), 'pointer_down', 1200);
+  assert.equal(result.result.type, 'false_start');
+  assert.equal(result.continued, false);
+  assert.equal(result.state.phase, 'false_start');
 });
