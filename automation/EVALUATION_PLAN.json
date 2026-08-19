@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0", "kind": "evaluation-plan",
+  "automatedChecks": [
+    "state transition and boundary tests", "false-start detection", "raw reaction-time integrity", "XP and level reachability",
+    "history bounds", "player agency contract", "zero-delay reentry contract", "responsive input source coverage", "build success"
+  ],
+  "humanChecks": [
+    { "id": "signal_clarity", "requiresHumanReview": true, "question": "光った瞬間を迷わず認識できるか" },
+    { "id": "measurement_feel", "requiresHumanReview": true, "question": "表示値が体感と大きくずれていないか" },
+    { "id": "growth_motivation", "requiresHumanReview": true, "question": "レベルと光の変化が再挑戦理由になるか" },
+    { "id": "wait_tension", "requiresHumanReview": true, "question": "待機が緊張感になり、退屈や苛立ちにならないか" },
+    { "id": "audio_comfort", "requiresHumanReview": true, "question": "合図音と反復音が自然か" },
+    { "id": "fatigue", "requiresHumanReview": true, "question": "数分間の反復で目・指・集中力への負荷が適切か" }
+  ]
+}

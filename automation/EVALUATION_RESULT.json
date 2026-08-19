@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "evaluation-result",
+  "evaluatedOn": "2026-08-19",
+  "automatedEvaluation": {
+    "status": "passed",
+    "checks": [
+      {
+        "id": "engineInvariants",
+        "status": "passed",
+        "iterations": 600,
+        "failures": 0
+      },
+      {
+        "id": "stateCoverage",
+        "status": "passed",
+        "successes": 517,
+        "falseStarts": 47,
+        "timeouts": 36
+      },
+      {
+        "id": "measurementIntegrity",
+        "status": "passed",
+        "baselineMs": 247,
+        "grownStateMs": 247,
+        "growthModifier": null
+      },
+      {
+        "id": "growthReachability",
+        "status": "passed",
+        "reachedLevel": 44,
+        "reachedStage": "nova",
+        "xp": 8790
+      },
+      {
+        "id": "rollingAverage",
+        "status": "passed",
+        "sampleSize": 10
+      },
+      {
+        "id": "playerAgency",
+        "status": "passed",
+        "readyConditionDoesNotCommit": true,
+        "declaredPlayerInputCommits": true
+      },
+      {
+        "id": "loopResponsiveness",
+        "status": "passed",
+        "nextActionAvailabilityMs": 0,
+        "resultPresentationBlocksInput": false
+      },
+      {
+        "id": "sourceCoverage",
+        "status": "passed",
+        "checks": {
+          "pointerInput": true,
+          "keyboardInput": true,
+          "audioFeedback": true,
+          "vibrationFeedback": true,
+          "responsiveViewport": true,
+          "visibleInstructions": true,
+          "minimumSoundTarget": true,
+          "landscapeLayout": true,
+          "reducedMotion": true
+        }
+      },
+      {
+        "id": "browserVisualReview",
+        "status": "needs_human_review",
+        "reason": "複数実画面幅と端末入力遅延は人レビューで確認する。"
+      },
+      {
+        "id": "marketFit",
+        "status": "not_evaluated",
+        "reason": "市場調査未実行"
+      }
+    ]
+  },
+  "humanEvaluation": {
+    "status": "pending",
+    "artifact": "HUMAN_APP_REVIEW.json",
+    "requiresReplacementBeforePublish": true
+  },
+  "criticalIssues": [],
+  "requiresHumanReview": true,
+  "recommendation": "human_playtest"
+}

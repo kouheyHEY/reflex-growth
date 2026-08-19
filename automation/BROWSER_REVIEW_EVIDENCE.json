@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0", "kind": "browser-review-evidence", "status": "core_flow_smoke_passed",
+  "servedLocally": true, "httpStatus": 200, "consoleErrors": 0,
+  "viewports": [
+    { "id": "desktop", "width": 1280, "height": 720, "blockingLayoutIssues": 0 },
+    { "id": "mobile_portrait", "width": 390, "height": 844, "blockingLayoutIssues": 0 },
+    { "id": "mobile_landscape", "width": 844, "height": 390, "blockingLayoutIssues": 0 }
+  ],
+  "screenshots": ["../docs/review/screenshots/desktop-start.png", "../docs/review/screenshots/mobile-emulated.png", "../docs/review/screenshots/mobile-landscape.png", "../docs/review/screenshots/mobile-result.png"],
+  "coreFlow": { "status": "passed", "steps": ["start", "random wait", "signal", "player input", "reaction result"], "runtimeExceptions": 0 },
+  "limitations": ["false start・timeout・高レベル状態の全画面証拠ではない", "実端末入力遅延は人レビューが必要", "音・振動・楽しさは画像では評価できない"]
+}

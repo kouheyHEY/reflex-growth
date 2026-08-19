@@ -1,0 +1,58 @@
+.growth-sprout .orb-shell::before {
+  border-color: rgba(93, 234, 255, .2);
+}
+
+.growth-sprout .orb-core {
+  transform: scale(1.2);
+  background: var(--mint);
+}
+
+.growth-bloom .orb-shell {
+  box-shadow: 0 0 55px rgba(56, 232, 160, .12);
+}
+
+.growth-bloom .orb-core {
+  transform: scale(1.45);
+  background: linear-gradient(135deg, var(--lime), var(--cyan));
+}
+
+.growth-nova .orb-shell {
+  border-color: rgba(255, 230, 110, .2);
+  box-shadow: 0 0 75px rgba(255, 230, 110, .14);
+}
+
+.growth-nova .orb-core {
+  transform: scale(1.7);
+  background: var(--gold);
+  box-shadow: 0 0 32px var(--gold);
+}
+
+.game,
+.topbar,
+.growth-card,
+.reaction-zone,
+.result-card,
+footer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.game {
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .brand span {
+    display: none;
+  }
+
+  .sound-button {
+    min-width: 84px;
+    padding-inline: .6rem;
+  }
+
+  .result-card {
+    width: 100%;
+    grid-template-columns: 1.35fr repeat(3, 1fr);
+  }
+}

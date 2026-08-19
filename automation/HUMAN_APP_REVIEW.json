@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0", "kind": "human-application-review", "status": "pending", "reviewer": null, "reviewedAt": null, "decision": null,
+  "playtestContext": { "devices": [], "sessionMinutes": null, "notes": "" },
+  "categories": [
+    { "id": "fine_bugs", "result": null, "notes": "" }, { "id": "layout", "result": null, "notes": "" },
+    { "id": "friction", "result": null, "notes": "" }, { "id": "player_agency", "result": null, "notes": "" },
+    { "id": "measurement_integrity", "result": null, "notes": "" }, { "id": "growth_integrity", "result": null, "notes": "" },
+    { "id": "fun_loop", "result": null, "notes": "" }, { "id": "onboarding", "result": null, "notes": "" },
+    { "id": "visual_quality", "result": null, "notes": "" }, { "id": "audio_quality", "result": null, "notes": "" },
+    { "id": "cognitive_load", "result": null, "notes": "" }
+  ],
+  "acceptedRisks": [], "requiredChanges": []
+}

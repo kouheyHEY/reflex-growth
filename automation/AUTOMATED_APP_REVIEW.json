@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "automated-application-review",
+  "reviewedOn": "2026-08-19",
+  "policy": "APP_REVIEW_POLICY.json",
+  "status": "passed",
+  "automatedChecks": {
+    "engineInvariants": {
+      "status": "passed",
+      "iterations": 600,
+      "failures": 0
+    },
+    "stateCoverage": {
+      "status": "passed",
+      "successes": 517,
+      "falseStarts": 47,
+      "timeouts": 36
+    },
+    "measurementIntegrity": {
+      "status": "passed",
+      "baselineMs": 247,
+      "grownStateMs": 247,
+      "growthModifier": null
+    },
+    "growthReachability": {
+      "status": "passed",
+      "reachedLevel": 44,
+      "reachedStage": "nova",
+      "xp": 8790
+    },
+    "rollingAverage": {
+      "status": "passed",
+      "sampleSize": 10
+    },
+    "playerAgency": {
+      "status": "passed",
+      "readyConditionDoesNotCommit": true,
+      "declaredPlayerInputCommits": true
+    },
+    "loopResponsiveness": {
+      "status": "passed",
+      "nextActionAvailabilityMs": 0,
+      "resultPresentationBlocksInput": false
+    },
+    "sourceCoverage": {
+      "status": "passed",
+      "checks": {
+        "pointerInput": true,
+        "keyboardInput": true,
+        "audioFeedback": true,
+        "vibrationFeedback": true,
+        "responsiveViewport": true,
+        "visibleInstructions": true,
+        "minimumSoundTarget": true,
+        "landscapeLayout": true,
+        "reducedMotion": true
+      }
+    },
+    "browserVisualReview": {
+      "status": "needs_human_review",
+      "reason": "複数実画面幅と端末入力遅延は人レビューで確認する。"
+    },
+    "marketFit": {
+      "status": "not_evaluated",
+      "reason": "市場調査未実行"
+    }
+  },
+  "findings": [
+    {
+      "id": "device-latency-variance",
+      "category": "measurement_integrity",
+      "severity": "medium",
+      "status": "needs_human_review",
+      "description": "ブラウザ、ディスプレイ、タッチ端末の遅延差が実測値へ影響する。絶対的な医学的測定値として扱わない。",
+      "automationDisposition": "human_review_required"
+    },
+    {
+      "id": "wait-tension-unverified",
+      "category": "fun_loop",
+      "severity": "high",
+      "status": "needs_human_review",
+      "description": "900〜2600msの待機が緊張感になるか、退屈や苛立ちになるかは試遊が必要。",
+      "automationDisposition": "human_review_required"
+    },
+    {
+      "id": "growth-feel-unverified",
+      "category": "growth_integrity",
+      "severity": "high",
+      "status": "needs_human_review",
+      "description": "数値・名称・光表現の変化が十分な成長実感になるかは試遊が必要。",
+      "automationDisposition": "human_review_required"
+    },
+    {
+      "id": "audio-visual-comfort-unverified",
+      "category": "audio_quality",
+      "severity": "medium",
+      "status": "needs_human_review",
+      "description": "強い発光と短い反復音の快適性は人による視聴確認が必要。",
+      "automationDisposition": "human_review_required"
+    }
+  ],
+  "humanReviewRequired": [
+    "fine_bugs",
+    "layout",
+    "friction",
+    "player_agency",
+    "measurement_integrity",
+    "growth_integrity",
+    "fun_loop",
+    "onboarding",
+    "visual_quality",
+    "audio_quality",
+    "cognitive_load"
+  ],
+  "releaseRecommendation": "human_review_required"
+}

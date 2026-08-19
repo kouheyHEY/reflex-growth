@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "research-status",
+  "status": "not_run",
+  "reason": "二作目では粗い入力から異ジャンルを生成できるかの再利用性検証を優先した。",
+  "facts": [],
+  "observations": [],
+  "marketRationale": { "status": "unknown", "reason": "市場調査未実行" }
+}

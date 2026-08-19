@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0", "kind": "player-agency-contract", "id": "reaction_response",
+  "actionCategory": "primary_action", "criticalAction": true, "readyCondition": "visual_signal_visible",
+  "commitPolicy": "player_input_required", "commitTriggers": ["pointer_down", "key_down"],
+  "automaticCommitAllowed": false, "feedbackRequired": true,
+  "rationale": "測定完了は必ずプレイヤーの実入力で確定し、合図表示やタイマーが代行しない。"
+}

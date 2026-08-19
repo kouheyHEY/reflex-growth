@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "implementation-task",
+  "gameSpecification": "./GAME_SPEC.json",
+  "technicalStack": ["HTML", "CSS", "JavaScript ES modules", "Canvas 2D"],
+  "repository": "reflex-growth",
+  "targetPlatform": "modern desktop and mobile browsers",
+  "developmentConstraints": ["外部依存なし", "一操作を維持", "測定値を育成で補正しない", "結果演出で次試行をブロックしない"],
+  "acceptanceCriteria": [
+    "タップ、クリック、Spaceで遊べる",
+    "合図までの時間が毎回変化する",
+    "合図前の入力をfalse startとして判定する",
+    "合図後のプレイヤー入力だけで反応時間を確定する",
+    "反応時間をミリ秒で保存し、育成状態による補正をしない",
+    "成功時にXP、レベル、成長段階、連続数が更新される",
+    "育成進捗と測定履歴がブラウザへ保存される",
+    "結果表示中でも0msで次の試行を開始できる",
+    "スマホ縦横とPCで主要操作が可能",
+    "音や振動がなくても進行できる",
+    "テスト、成果物検証、ビルドが成功する"
+  ],
+  "testRequirements": ["待機境界", "false start", "反応時間計測", "時間切れ", "履歴上限", "XP・レベル", "測定の非補正", "プレイヤー確定入力", "即時再試行"],
+  "buildCommand": "npm run build",
+  "testCommand": "npm test",
+  "outputPath": "dist"
+}

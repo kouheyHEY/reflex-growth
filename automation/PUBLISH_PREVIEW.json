@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0", "kind": "publish-preview", "provider": null,
+  "title": "REFLEX BLOOM", "description": "光った瞬間をタップ。反応時間を測りながら、小さな光を育てる反射神経ゲーム。",
+  "tags": ["reaction", "training", "growth", "one-button", "mobile"], "genre": "reaction / incremental",
+  "price": { "amount": 0, "currency": null }, "visibility": "draft", "build": "./dist", "targetPlatform": "HTML5",
+  "screenshots": [], "autoPublishEnabled": false,
+  "publishGate": { "canPublish": false, "blockers": ["人による必須アプリレビュー未完了", "公開先未決定", "スクリーンショット未作成", "公開内容の承認待ち"] }
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "pipeline-run",
+  "project": "REFLEX BLOOM",
+  "automationLevel": 4,
+  "status": "waiting_for_human_review",
+  "stages": [
+    {
+      "id": "input",
+      "status": "completed",
+      "artifact": "USER_BRIEF.json"
+    },
+    {
+      "id": "research",
+      "status": "not_run",
+      "artifact": "RESEARCH_STATUS.json"
+    },
+    {
+      "id": "design",
+      "status": "completed",
+      "artifacts": [
+        "DESIGN_DECISIONS.json",
+        "GAME_SPEC.json"
+      ]
+    },
+    {
+      "id": "implementation",
+      "status": "completed",
+      "artifact": "IMPLEMENTATION_TASK.json"
+    },
+    {
+      "id": "automated_evaluation",
+      "status": "completed",
+      "artifact": "AUTOMATED_APP_REVIEW.json"
+    },
+    {
+      "id": "mandatory_application_review",
+      "status": "waiting_for_user",
+      "artifacts": [
+        "APP_REVIEW_POLICY.json",
+        "HUMAN_APP_REVIEW.json"
+      ]
+    },
+    {
+      "id": "publish",
+      "status": "waiting_for_user",
+      "artifact": "PUBLISH_PREVIEW.json"
+    }
+  ],
+  "estimatedCost": 0,
+  "actualCost": 0,
+  "tokenUsage": null,
+  "externalApiUsage": [],
+  "notes": "市場調査、外部AI API、実公開は実行していない。"
+}

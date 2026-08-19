@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#07130f">
+  <meta name="description" content="反応速度を測りながら、小さな光を育てる反射神経ゲーム。">
+  <title>REFLEX BLOOM</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./growth.css">
+</head>
+<body>
+  <main id="game" class="game phase-idle" aria-label="REFLEX BLOOM 反射神経測定ゲーム">
+    <canvas id="effects" aria-hidden="true"></canvas>
+    <header class="topbar">
+      <div class="brand"><span>REFLEX</span><strong>BLOOM</strong></div>
+      <button id="sound-button" class="sound-button" type="button" aria-pressed="true">SOUND ON</button>
+    </header>
+
+    <section class="growth-card" aria-label="育成状況">
+      <div class="level-row"><span>LIGHT LEVEL</span><strong id="level">1</strong></div>
+      <div class="xp-track" role="progressbar" aria-label="次のレベルまでの経験値" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="xp-fill"></div></div>
+      <p id="growth-name">SEED LIGHT</p>
+    </section>
+
+    <button id="reaction-zone" class="reaction-zone" type="button" aria-describedby="instruction">
+      <span class="orb-shell" aria-hidden="true"><span class="orb"><span class="orb-core"></span></span></span>
+      <span id="eyebrow" class="eyebrow">REACTION TRAINING</span>
+      <strong id="state-label">TAP TO START</strong>
+      <span id="instruction">合図が光ったら、すぐタップ</span>
+    </button>
+
+    <section class="result-card" aria-live="polite" aria-atomic="true">
+      <div class="latest"><span>LAST</span><strong id="last-time">—</strong><small id="result-note">準備はいい？</small></div>
+      <div class="stat"><span>BEST</span><strong id="best-time">—</strong></div>
+      <div class="stat"><span>AVG 10</span><strong id="average-time">—</strong></div>
+      <div class="stat"><span>STREAK</span><strong id="streak">0</strong></div>
+    </section>
+
+    <footer><span>タップ / クリック / Space</span><span id="trial-count">0 TRIALS</span></footer>
+  </main>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

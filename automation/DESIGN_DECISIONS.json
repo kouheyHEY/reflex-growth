@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "kind": "design-decisions",
+  "decisions": [
+    { "field": "workingTitle", "value": "REFLEX BLOOM", "sourceType": "RECOMMENDATION", "reason": "反射測定と育成の両方を短く表現するため。" },
+    { "field": "coreLoop", "value": "待つ→合図でタップ→反応時間→XP→再挑戦", "sourceType": "RECOMMENDATION", "reason": "テーマを一操作の反復ループへ落とすため。" },
+    { "field": "targetPlatform", "value": "responsive-web", "sourceType": "RECOMMENDATION", "reason": "PCとスマホで同じタップ操作を利用できるため。" },
+    { "field": "signalWaitMs", "value": [900, 2600], "sourceType": "ESTIMATE", "reason": "予測押しを防ぎつつ待機の退屈を抑える初期範囲。", "confidence": 0.5 },
+    { "field": "measurementIntegrity", "value": "raw_reaction_time_never_modified_by_growth", "sourceType": "RECOMMENDATION", "reason": "育成による補正で反射神経測定の意味を壊さないため。" },
+    { "field": "growthEffects", "value": ["level", "light stage", "streak", "feedback"], "sourceType": "RECOMMENDATION", "reason": "測定の公平性を保ちながら成長を実感させるため。" },
+    { "field": "falseStart", "value": "trial_failure_without_xp", "sourceType": "RECOMMENDATION", "reason": "合図を見る反射測定と予測連打を区別するため。" },
+    { "field": "nextTrialAvailabilityMs", "value": 0, "sourceType": "RECOMMENDATION", "reason": "結果を読みながら即座に次の試行を開始できるようにするため。" }
+  ]
+}

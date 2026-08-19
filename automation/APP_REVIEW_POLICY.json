@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0", "kind": "mandatory-application-review-policy", "mandatory": true,
+  "gate": "before_publish_preparation_approval",
+  "allowedDecisions": ["approved", "approved_with_accepted_risks", "changes_required"],
+  "requiredDecisionForPublish": ["approved", "approved_with_accepted_risks"],
+  "rules": { "automatedReviewMustPass": true, "humanReviewerMustBeRecorded": true, "allRequiredCategoriesMustBeReviewed": true, "blockingFindingsMustBeResolved": true, "assumedReviewCannotSatisfyGate": true, "autoPublishEnabledByDefault": false },
+  "categories": [
+    { "id": "fine_bugs", "label": "細かなバグ", "required": true, "automation": "high", "automatedMethods": ["unit tests", "state invariants", "randomized simulation"], "humanRole": "端末固有問題を確認" },
+    { "id": "layout", "label": "表示崩れ", "required": true, "automation": "high", "automatedMethods": ["responsive source checks", "multi-viewport review"], "humanRole": "実画面の競合と可読性を確認" },
+    { "id": "friction", "label": "プレイの面倒くささ", "required": true, "automation": "medium", "automatedMethods": ["actions to first play", "next-action availability", "dead-time measurement"], "humanRole": "反復の億劫さを試遊で判断" },
+    { "id": "player_agency", "label": "プレイヤー主体性", "required": true, "automation": "high", "automatedMethods": ["agency contract", "commit event order"], "humanRole": "反応が自分の入力として感じられるか確認" },
+    { "id": "measurement_integrity", "label": "測定の正当性", "required": true, "automation": "high", "automatedMethods": ["raw-time invariants", "growth modifier absence", "boundary tests"], "humanRole": "端末差と体感値の妥当性を確認" },
+    { "id": "growth_integrity", "label": "育成と成長実感", "required": true, "automation": "medium", "automatedMethods": ["XP thresholds", "stage reachability", "reward frequency"], "humanRole": "育った感覚と継続動機を判断" },
+    { "id": "fun_loop", "label": "楽しいループ", "required": true, "automation": "assisted", "automatedMethods": ["loop reachability", "repeat simulation", "reward cadence"], "humanRole": "もう一度測りたい感覚を最終判断" },
+    { "id": "onboarding", "label": "慣れるための動線", "required": true, "automation": "medium", "automatedMethods": ["instruction states", "feedback coverage"], "humanRole": "説明なしで合図待ちを理解できるか確認" },
+    { "id": "visual_quality", "label": "見た目と成長表現", "required": true, "automation": "assisted", "automatedMethods": ["visual state coverage", "contrast review"], "humanRole": "質感と段階差を判断" },
+    { "id": "audio_quality", "label": "音声と違和感", "required": true, "automation": "assisted", "automatedMethods": ["sound event coverage"], "humanRole": "合図の聞こえ方と反復時の不快感を確認" },
+    { "id": "cognitive_load", "label": "脳の負荷", "required": true, "automation": "assisted", "automatedMethods": ["choice count", "wait range", "UI density"], "humanRole": "集中、疲労、退屈の境界を判断" }
+  ],
+  "remediation": { "autoApply": ["deterministic safe fixes with regression tests"], "generateImplementationTask": ["layout", "friction", "onboarding", "feedback", "measurement_integrity"], "neverAutoApprove": ["fun_loop", "growth_integrity", "visual_quality", "audio_quality", "cognitive_load"] }
+}
